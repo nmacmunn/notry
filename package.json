@@ -1,0 +1,32 @@
+{
+  "name": "notry.ts",
+  "version": "0.0.1",
+  "description": "An abstraction on top of try-catch making exceptions type safe",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "tsc -p ./",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "jest",
+    "watch": "tsc -p ./ --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmacmunn/notry.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nmacmunn/notry/issues"
+  },
+  "homepage": "https://github.com/nmacmunn/notry#readme",
+  "devDependencies": {
+    "jest": "^29.4.3",
+    "prettier": "^2.8.4",
+    "ts-jest": "^29.0.5",
+    "typescript": "^4.9.5"
+  }
+}
