@@ -1,6 +1,6 @@
 {
-  "name": "notry.ts",
-  "version": "0.0.1",
+  "name": "notry-ts",
+  "version": "0.0.2",
   "description": "An abstraction on top of try-catch making exceptions type safe",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",

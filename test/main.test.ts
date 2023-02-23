@@ -41,6 +41,11 @@ import { notry, type Did, type Quit } from "../src/main";
   // quit.if
   //
   notry((quit) => quit.if(Math.random() > 0.5, true)) satisfies Did<void, true>;
+  notry((quit: Quit<true>) => {
+    const val = true as boolean;
+    quit.if(val, true);
+    val satisfies false;
+  }) satisfies Did<void, true>;
   notry(async (quit) => quit.if(Math.random() > 0.5, true)) satisfies Promise<Did<void, true>>;
 
   //
@@ -58,6 +63,23 @@ import { notry, type Did, type Quit } from "../src/main";
   notry((quit) => quit.catch(async (val: boolean) => val, true, true)) satisfies Promise<Did<boolean, true>>;
   // @ts-expect-error
   notry((quit) => quit.catch(async (val: boolean) => val, true, true)) satisfies Promise<Did<true, true>>;
+
+  //
+  // quit.unless
+  //
+  notry((quit) => quit.unless(Math.random() > 0.5, true)) satisfies Did<void, true>;
+  notry((quit: Quit<true>) => {
+    const val = true as boolean;
+    quit.unless(val, true);
+    val satisfies true;
+  }) satisfies Did<void, true>;
+  notry((quit: Quit<true>) => {
+    const val = true as boolean;
+    quit.unless(!val, true);
+    val;
+    val satisfies false;
+  }) satisfies Did<void, true>;
+  notry(async (quit) => quit.unless(Math.random() > 0.5, true)) satisfies Promise<Did<void, true>>;
 
   //
   // Did
@@ -201,6 +223,16 @@ describe("notry", () => {
     test("should pass arguments to the function asynchronously", async () => {
       const did = await notry((quit) => quit.catch(async (val) => val, "pass", "fail"));
       expect(did.ok && did.y).toBe("pass");
+    });
+  });
+  describe("quit.unless", () => {
+    test("should return did.n if condition is false", () => {
+      const did = notry((quit) => quit.unless(false, "fail"));
+      expect(!did.ok && did.n).toBe("fail");
+    });
+    test("should return did.y if condition is true", () => {
+      const did = notry((quit) => quit.unless(true, "fail"));
+      expect(did.ok && did.y).toBe(undefined);
     });
   });
 

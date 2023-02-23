@@ -7,11 +7,12 @@ class Carrier<T> {
  */
 export interface Quit<N> {
   (val: N): never;
-  if(cond: unknown, val: N): asserts cond;
+  if(cond: unknown, val: N): asserts cond is false;
   catch<R, Args extends unknown[]>(
     fn: (...args: Args) => R,
     ...args: [...Args, N]
   ): R;
+  unless(cond: unknown, val: N): asserts cond;
 }
 
 const quit = Object.assign(
@@ -39,6 +40,11 @@ const quit = Object.assign(
         return result;
       } catch (exception) {
         throw new Carrier(val, exception);
+      }
+    },
+    unless: (cond: unknown, val: unknown) => {
+      if (!cond) {
+        throw new Carrier(val);
       }
     },
   }

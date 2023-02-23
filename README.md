@@ -1,11 +1,11 @@
-# notry.ts
+# notry-ts
 
 An abstraction on top of try-catch making exceptions type safe.
 
 ## Installation
 
 ```sh
-npm install --save notry.ts
+npm install --save notry-ts
 ```
 
 ## Overview
@@ -17,7 +17,7 @@ Define functions that accept a `Quit` parameter specifying how it can fail. Call
 Import the `notry` function and `Quit` type.
 
 ```typescript
-import { notry, type Quit } from "notry.ts";
+import { notry, type Quit } from "notry-ts";
 ```
 
 ### quit
@@ -125,7 +125,7 @@ if (did.ok) {
 Split `randomFromJson` into two functions, either of which could fail.
 
 ```typescript
-import { notry, type Of, type Quit } from "notry.ts";
+import { notry, type Of, type Quit } from "notry-ts";
 
 /**
  * Return the value of json.max
