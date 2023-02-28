@@ -1,6 +1,6 @@
 # notry-ts
 
-An abstraction on top of try-catch making exceptions type safe.
+[notry-ts is a type safe error handling alternative to try-catch](https://neil.macmunn.com/posts/notry)
 
 ## Installation
 
@@ -10,7 +10,20 @@ npm install --save notry-ts
 
 ## Overview
 
-Define functions that accept a `Quit` parameter specifying how it can fail. Call with `notry` to handle errors and return a discriminated union type `Did` prepresenting the result.
+`notry` invokes a function with a `quit` argument and returns a discriminated union representing the result. Calling `quit` is equivalent to throwing a type-checked exception. If you think of `notry` like a promise constructor, then `quit` is like `reject`.
+
+```typescript
+const did = notry((quit: Quit<"foo">) => {
+  quit("foo");
+  // unreachable
+});
+if (did.ok) {
+  console.log(did.y);
+} else {
+  console.log(did.n);
+}
+// foo
+```
 
 ## Usage
 
@@ -76,6 +89,23 @@ function randomUnder(
   quit.if(max > 1, "Bad max");
   const val = Math.random();
   quit.if(val > max, "Out of range");
+  return val;
+}
+```
+
+
+### quit.unless
+
+Convenience function for quitting on some condition. Prefer over `quit.if` for better type narrowing.
+
+```typescript
+function randomUnder(
+  quit: Quit<"Bad max" | "Out of range">,
+  max: number
+): number {
+  quit.unless(max <= 1, "Bad max");
+  const val = Math.random();
+  quit.unless(val <= max, "Out of range");
   return val;
 }
 ```
